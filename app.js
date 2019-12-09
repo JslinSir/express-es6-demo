@@ -7,27 +7,31 @@ import createError from 'http-errors'
 import express from 'express'
 import path from 'path'
 import cookieParser from 'cookie-parser'
-import db from './plugins/db'
+import db from './src/plugins/db'
 
 
-
-import WebRoute from './routes/web'
-import AdminRoute from './routes/admin'
+import WebRoute from './src/routes/web'
+import AdminRoute from './src/routes/admin'
 
 
 const app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, './src/views'));
 app.set('view engine', 'jade');
 
 // app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, './src/public')));
 
-// TODO:  数据库连接状态
+db.on('error', console.error.bind(console, '数据库连接失败'));
+
+db.once('open', function () {
+  console.log('数据库连接成功')
+ 
+});
 
 WebRoute(app)
 AdminRoute(app)

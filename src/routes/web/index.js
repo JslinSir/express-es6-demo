@@ -5,6 +5,7 @@
  */
 import express from 'express'
 import LoginFn from './login'
+import TestFn from './test'
 
 const router = express.Router();
 
@@ -16,6 +17,8 @@ const WebApi = (app) => {
     res.send('web api')
   })
 
+  // test
+  router.get('/test', TestFn)
   // 登录
   router.post('/login', LoginFn)
 
